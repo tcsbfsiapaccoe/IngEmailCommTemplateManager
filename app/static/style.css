@@ -1,0 +1,612 @@
+/* This index.html's CSS classes */
+
+h1, h2, h3 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 20px;
+}
+
+.controls button {
+    padding: 12px 25px;
+    font-size: 17px;
+    cursor: pointer;
+    margin: 0 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.controls button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-1px)
+}
+
+.controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+    transform: none;
+}
+
+.primary-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.primary-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.primary-button:disabled {
+    background-color: #e2e6ea;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.options-container {
+    background-color: #e9f5ff;
+    border: 1px solid #cce5ff;
+    border-radius: 30px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: fit-content;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.options-container h2 {
+    color: #004085;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.options-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#optionsForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding-top: 10px;
+}
+
+.option-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    max-width: none;
+    margin-bottom: 0;
+}
+
+.option-group > label {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.apply-options-button {
+    padding: 12px 30px;
+    font-size: 1.1em;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.apply-options-button:hover {
+    background-color: #218838;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+}
+
+.radio-label {
+    font-weight: normal;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1em;
+    color: #555;
+}
+
+.radio-label input[type="radio"] {
+    margin-right: 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    outline: none;
+    transition: border-color 0.2s ease;
+    position: relative;
+    top: 1px;
+}
+
+.radio-label input[type="radio"]:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.radio-label input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dropdown-select {
+    vertical-align: middle;
+}
+
+.apply-options-button {
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.dropdown-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
+}
+
+.error-message {
+    color: #d8000c;
+    background-color: #ffbaba;
+    border: 1px solid #d8000c;
+    padding: 15px;
+    margin: 30px auto;
+    text-align: center;
+    border-radius: 8px;
+    max-width: 600px;
+    font-weight: bold;
+}
+
+.no-match-message {
+    font-size: 1.5em;
+    color: #D92332;
+    text-align: center;
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-style: italic;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+}
+
+.tr-display {
+    min-height: 120px;
+    background-color: #fdfdfd;
+    border: 1px dashed #cccccc;
+    padding: 10px;
+    margin: 0;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+    line-height: 1.4;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    display: block;
+}
+
+.percentages-row td {
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.percentages-row h3 {
+    margin-top: 0;
+    color: #0056b3;
+    text-align: left;
+}
+
+.percentages-row ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.percentages-row li {
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.percentages-row strong {
+    color: #007bff;
+    font-weight: bold;
+}
+
+
+/* Current HTML CSS classes */
+
+
+div [style*="margin:16px 0"] {
+    margin: 0 !important;
+}
+
+*[x-apple-data-detectors], /* iOS */
+.x-gmail-data-detectors, /* Gmail */
+.x-gmail-data-detectors *,
+.aBn {
+    border-bottom: 0 !important;
+    cursor: default !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
+.a6S {
+    display: none !important;
+    opacity: 0.01 !important;
+}
+
+.button-link {
+    text-decoration: none !important;
+}
+
+.wrapper {
+    width: 100%;
+
+    table-layout: fixed;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+.webkit {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.outer {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+.webkit-430 {
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.outer-430 {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 440px;
+}
+
+img.full-width {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+}
+
+.one-column {
+    text-align: center;
+    font-size: 0;
+}
+
+.two-column {
+    text-align: center;
+    font-size: 0;
+}
+
+.two-column .column {
+    width: 100%;
+    max-width: 280px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+
+.two-column img.full-width {
+    width: 100%;
+    max-width: 240%;
+    height: auto;
+}
+
+.two-column .column-full {
+    width: 100%;
+    max-width: 300px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+
+.two-column .column-full img.full-width {
+    max-width: 600px;
+}
+
+.three-column {
+    text-align: center;
+    font-size: 0;
+}
+
+.three-column .column {
+    width: 100%;
+    max-width: 184px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+
+.three-column img.full-width {
+    width: 100%;
+    max-width: 186.65px;
+    height: auto;
+}
+
+.width-185 {
+    max-width: 185px !important;
+}
+
+.width-210 {
+    max-width: 210px !important;
+}
+
+.width-375 {
+    max-width: 375px !important;
+}
+
+.width-249 {
+    max-width: 249px !important;
+}
+
+.width-70 {
+    max-width: 70px !important;
+}
+
+.width-428 {
+    max-width: 428px !important;
+}
+
+.footer-0 {
+    max-width: 280px !important;
+}
+
+#outlook a {
+    padding: 0;
+}
+
+@media screen and (max-width:600px) {
+    table[y] .footer-divider-2 {
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    table[y] .column,
+    table[y] .column-full,
+    table[y] .width-185,
+    table[y] .width-210,
+    table[y] .width-375,
+    table[y] .footer-0,
+    table[y] img.full-width {
+        max-width: 100% !important;
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
+    .pc100 {
+        width: 100% !important;
+    }
+
+    .center {
+        text-align: center !important;
+    }
+
+    .left {
+        text-align: left !important;
+    }
+
+    .hidden-mobile {
+        display: none !important;
+    }
+
+    .auto-height-mobile {
+        height: auto !important;
+    }
+}
+
+.applelinkwhite {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.applelinkblack {
+    color: #333333 !important;
+    text-decoration: none !important;
+}
+
+.body-space {
+    padding-top: 0px;
+}
+
+
+
+/* Master Template CSS classes */
+
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 !important;
+    padding: 0;
+    height: 100% !important;
+    width: 100% !important;
+    background-color: white;
+}
+
+* {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+div[style*="margin: 16px 0"] {
+    margin: 0 !important;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    mso-line-height-rule: exactly;
+    mso-margin-bottom-alt: 0;
+    mso-margin-top-alt: 0;
+    mso-table-lspace: 0pt !important;
+    mso-table-rspace: 0pt !important;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000000;
+}
+
+table th, td {
+    width: 50%;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+td div, th div {
+    border: none;
+}
+
+img {
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+}
+
+/* A work-around for email clients meddling in triggered links. */
+*[x-apple-data-detectors], /* iOS */
+.x-gmail-data-detectors, /* Gmail */
+.x-gmail-data-detectors *,
+.aBn {
+    border-bottom: 0 !important;
+    cursor: default !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
+/* Prevents Gmail from displaying a download button on large, non-linked images. */
+
+.a6S {
+    display: none !important;
+    opacity: 0.01 !important;
+}
+
+/* Prevents underlining the button text in Windows 10 */
+.button-link {text-decoration: none !important;}
+
+.wrapper {
+    width: 100%;
+    table-layout: fixed;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+.webkit {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.outer {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+img.full-width {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* column layout */
+.m-column {
+    text-align: center;
+    font-size: 0;
+}
+
+.applelinkwhite a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+.applelinkblack a {
+    color: #111010 !important;
+    text-decoration: none !important;
+}
+
+#outlook a { padding: 0}
+.body-space {padding-top: 0}
+
+/* Media Queries */
+@media screen and (max-width: 600px) {
+    table[y] .column,
+    table[y] img.full-width {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+    }
+    .pc100 {width: 100% !important}
+    .center {text-align: center !important}
+    .left {text-align: left !important}
+    .m-hidden { display: none !important}
+}
+
+
+
+
+

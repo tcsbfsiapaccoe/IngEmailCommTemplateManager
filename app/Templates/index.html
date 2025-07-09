@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TR Comparison Viewer</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        {# Flash Messages Display #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <h1>HTML TR Comparison Viewer</h1>
+
+        <div class="options-container">
+            <h2>Options</h2>
+            <form id="optionsForm" action="{{ url_for('compare_trs') }}" method="get">
+                <input type="hidden" name="html_tr_index" value="{{ html_tr_index }}">
+                <input type="hidden" name="match_index" value="{{ match_index }}">
+
+                <div class="option-group">
+                    <label>Comparison Mode:</label>
+                    <div class="radio-group" onchange="updateScoreVisibility()">
+                        <label class="radio-label">
+                            <input type="radio" name="comparison_mode" value="text" {% if selected_comparison_mode == 'text' %}checked{% endif %}> Text Match
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="comparison_mode" value="hierarchy" {% if selected_comparison_mode == 'hierarchy' %}checked{% endif %}> Tag Hierarchy Match
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="comparison_mode" value="both" {% if selected_comparison_mode == 'both' %}checked{% endif %}> Both
+                        </label>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label for="min_similarity_cutoff">Minimum Similarity Cutoff:</label>
+                    <select id="min_similarity_cutoff" name="min_similarity_cutoff" class="dropdown-select">
+                        {% set cutoff_values = ['30', '40', '50', '60', '70', '80', '90', '100'] %}
+                        {% for value in cutoff_values %}
+                            <option value="{{ value }}" {% if selected_min_similarity_cutoff == value %}selected{% endif %}>{{ value }}%</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="apply-options-button">Apply Options</button>
+            </form>
+        </div>
+        <div class="controls">
+            <button class="primary-button" onclick="location.href='{{ prev_link }}'" {{ prev_disabled }}>◀ Previous HTML TR</button>
+            <button class="primary-button" onclick="location.href='{{ next_link }}'" {{ next_disabled }}>Next HTML TR ▶</button>
+        </div>
+
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% else %}
+            <h2>Comparing HTML TR {{ current_tr_number }} of {{ total_trs }}</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Current HTML File TR</th>
+                        <th>Most Matching Master Template TR (Match {{ current_match_number }} of {{ total_matches }})</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="tr-display">{{ current_tr_html | safe }}</div>
+                        </td>
+                        <td>
+                            <div class="tr-display">{{ master_tr_html | safe }}</div>
+
+                            <div id="matchNavControls" class="match-nav-controls">
+                                {% if total_matches > 0 %}
+                                <form action="{{ url_for('apply_template') }}" method="post" style="display:inline;">
+                                    <input type="hidden" name="html_tr_index" value="{{ html_tr_index }}">
+                                    <input type="hidden" name="match_index" value="{{ match_index }}">
+                                    <button type="submit" class="primary-button apply-template-button" {{ apply_button_disabled_for_100_percent }}>&lt;&lt; Apply this Template to the HTML File</button>
+                                </form>
+                                {% endif %}
+
+                                <button class="primary-button" onclick="location.href='{{ prev_match_link }}'" {{ prev_match_disabled }}>◀ Previous Match</button>
+                                <button class="primary-button" onclick="location.href='{{ next_match_link }}'" {{ next_match_disabled }}>Next Match ▶</button>
+                                <button class="primary-button" onclick="location.href='{{ go_to_best_match_link }}'" {{ go_to_best_match_disabled }}>Go to Best Match</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="percentages-row">
+                        <td colspan="2">
+                            <h3>Comparison Scores:</h3>
+                            <ul id="scoreList">
+                                <li id="textScore" {% if selected_comparison_mode == 'text' %}class="highlight-score"{% endif %}>Inner Text Similarity: <strong>{{ text_percentage }}</strong></li>
+                                <li id="hierarchyScore" {% if selected_comparison_mode == 'hierarchy' %}class="highlight-score"{% endif %}>Tag Hierarchy Similarity: <strong>{{ hierarchy_percentage }}</strong></li>
+                                <li id="combinedScore" {% if selected_comparison_mode == 'both' %}class="highlight-score"{% endif %}>Combined Best Match: <strong>{{ combined_percentage }}</strong></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        <script>
+            function updateScoreVisibility() {
+                const mode = document.querySelector('input[name="comparison_mode"]:checked').value;
+
+                const textScore = document.getElementById('textScore');
+                const hierarchyScore = document.getElementById('hierarchyScore');
+                const combinedScore = document.getElementById('combinedScore');
+
+                // Hide all first
+                if (textScore) textScore.style.display = 'none';
+                if (hierarchyScore) hierarchyScore.style.display = 'none';
+                if (combinedScore) combinedScore.style.display = 'none';
+
+                // Show and highlight relevant ones
+                if (mode === 'text') {
+                    if (textScore) {
+                        textScore.style.display = 'list-item';
+                        textScore.classList.add('highlight-score');
+                    }
+                } else if (mode === 'hierarchy') {
+                    if (hierarchyScore) {
+                        hierarchyScore.style.display = 'list-item';
+                        hierarchyScore.classList.add('highlight-score');
+                    }
+                } else if (mode === 'both') {
+                    if (textScore) textScore.style.display = 'list-item';
+                    if (hierarchyScore) hierarchyScore.style.display = 'list-item';
+                    if (combinedScore) {
+                        combinedScore.style.display = 'list-item';
+                        combinedScore.classList.add('highlight-score');
+                    }
+                }
+
+                // Remove highlight from others
+                [textScore, hierarchyScore, combinedScore].forEach(item => {
+                    if (item && !item.style.display.includes('list-item')) { // Only remove if not displayed
+                        item.classList.remove('highlight-score');
+                    }
+                });
+            }
+
+            function manageMatchNavButtons() {
+                const matchNavControls = document.getElementById('matchNavControls');
+                // Ensure total_matches is treated as a number
+                const totalMatches = parseInt("{{ total_matches | default(0) }}");
+
+                if (matchNavControls) { // Check if the element exists
+                    if (totalMatches === 0) {
+                        matchNavControls.style.display = 'none';
+                    } else {
+                        matchNavControls.style.display = 'block'; // Or 'flex' as per your CSS for .match-nav-controls
+                    }
+                }
+            }
+
+            // Call both functions when the page loads to set the initial state
+            document.addEventListener('DOMContentLoaded', () => {
+                updateScoreVisibility();
+                manageMatchNavButtons();
+            });
+        </script>
+    </body>
+</html>
