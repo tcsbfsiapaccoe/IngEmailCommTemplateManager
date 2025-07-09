@@ -35,15 +35,23 @@ class IngMasterTemplate:
         expected_start_comment_text = f"{delimiter_text}{Tx.START_SUFFIX}"
         actual_start_comment = defining_elements[0].string.strip()
 
+        # Apply corrections for "&amp;" and "&"
+        if (actual_start_comment):
+            actual_start_comment = actual_start_comment.replace ("&amp;", "&")
+
         if actual_start_comment != expected_start_comment_text:
             raise ValueError(f"The first element must be a START comment with text '{expected_start_comment_text}'.")
 
         expected_end_comment_text = f"{delimiter_text}{Tx.END_SUFFIX}"
         actual_end_comment = defining_elements[-1].string.strip()
+        
+        # Apply corrections for "&amp;" and "&"
+        if (actual_end_comment):
+            actual_end_comment = actual_end_comment.replace ("&amp;", "&")
 
         if actual_end_comment != expected_end_comment_text:
             raise ValueError(f"The last element must be an END comment with text '{expected_end_comment_text}'.")
-
+            
         if not isinstance(defining_elements[1], Tag):
             raise ValueError("The template element (middle element) must be a valid HTML tag.")
         self._template_element = defining_elements[1]

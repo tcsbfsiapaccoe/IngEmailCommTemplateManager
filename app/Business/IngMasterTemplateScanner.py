@@ -343,6 +343,12 @@ class IngMasterTemplateScanner:
             if node.name == "tr":
                 template_element_found = True
                 current_defining_elements.append(node)
+                
+        if (start_delimiter_text):
+            start_delimiter_text = start_delimiter_text.replace ("&amp;", "&")
+            
+        if (end_delimiter_text):
+            end_delimiter_text = end_delimiter_text.replace ("&amp;", "&")
 
         if (
             template_element_found
