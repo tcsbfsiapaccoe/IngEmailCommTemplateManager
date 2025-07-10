@@ -62,79 +62,101 @@ h1, h2, h3 {
 }
 
 .options-container {
-    background-color: #e9f5ff;
+    background-color: #e9f5ff; /* This is the sky blue color */
     border: 1px solid #cce5ff;
-    border-radius: 30px;
-    padding: 20px;
+    border-radius: 15px; /* Adjusted: Reduced corner radius */
+    padding: 20px; /* Internal padding remains */
     margin-bottom: 30px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    width: fit-content;
-    margin: 0 auto;
-    box-sizing: border-box;
-    text-align: center;
+    width: calc(100% - 40px); /* Adjust width to account for left/right margins */
+    max-width: none; /* No maximum width */
+    margin: 0 20px; /* Added 20px margin on left and right sides */
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
 }
 
 .options-container h2 {
     color: #004085;
-    margin-top: 0;
-    margin-bottom: 25px;
+    /* margin-top: 0; Keep this as is for general container h2 */
+    /* margin-bottom: 25px; Keep this as is for general container h2 */
 }
 
-.options-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+/* Styling for the main options table */
+.options-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 20px 0;
+    margin: 0 auto;
 }
 
-#optionsForm {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-    padding-top: 10px;
+.options-table tbody {
+    vertical-align: top;
 }
 
+/* Specific styling for the H2 title cell */
+.options-title-cell {
+    text-align: center;
+    padding-top: 1px;    /* Adjusted: Drastically reduced to bring title closer to the container's top boundary */
+    padding-bottom: 30px; /* Adjusted: Increased to create more visible space to the next row */
+}
+
+/* Ensure the h2 inside this cell has no extra margins */
+.options-title-cell h2 {
+    margin: 0; /* This should already be there and is correct */
+    color: #004085;
+}
+
+/* IMPORTANT: Override the general td styles for this specific table's cells */
+.options-table td {
+    width: auto;
+    display: table-cell;
+    vertical-align: top;
+    text-align: left;
+    padding: 0 10px;
+    background-color: transparent; /* Make the cell background transparent */
+}
+
+/* Style for the main labels (e.g., "Comparison Mode:", "Minimum Similarity Cutoff:") */
+.form-question-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    color: #333;
+}
+
+/* Existing styles for .option-group, ensure it doesn't add extra margins */
 .option-group {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    width: auto;
-    max-width: none;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 0;
+    gap: 5px;
 }
 
-.option-group > label {
-    font-weight: bold;
-    color: #333;
-    font-size: 1.1em;
-    margin-bottom: 0;
-    white-space: nowrap;
+/* Styling for dropdowns */
+.dropdown-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    box-sizing: border-box;
+    height: 38px;
 }
 
-.apply-options-button {
-    padding: 12px 30px;
-    font-size: 1.1em;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
+.dropdown-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
 }
 
-.apply-options-button:hover {
-    background-color: #218838;
-}
-
+/* Styling for radio button group */
 .radio-group {
+    margin-top: 5px;
     display: flex;
+    flex-direction: row;
     gap: 15px;
-    flex-wrap: nowrap;
-    margin-bottom: 0;
+    flex-wrap: wrap;
 }
 
 .radio-label {
@@ -180,19 +202,37 @@ h1, h2, h3 {
     transform: translate(-50%, -50%);
 }
 
-.dropdown-select {
-    vertical-align: middle;
-}
-
+/* Styling for the Apply Options button */
 .apply-options-button {
-    margin-top: 0;
-    margin-left: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 38px;
+    white-space: nowrap;
+    margin: 0;
 }
 
-.dropdown-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-    outline: none;
+.apply-options-button:hover:not(:disabled) {
+    background-color: #218838;
+}
+
+.apply-options-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Adjustments for the specific button cell to vertically align the button */
+.options-table td.button-cell {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 10px;
 }
 
 .error-message {
@@ -511,7 +551,7 @@ table {
 
 table th, td {
     width: 50%;
-    background-color: white;
+    background-color: white; /* This is the general rule that was overriding */
     border-collapse: collapse;
 }
 
@@ -605,8 +645,3 @@ img.full-width {
     .left {text-align: left !important}
     .m-hidden { display: none !important}
 }
-
-
-
-
-

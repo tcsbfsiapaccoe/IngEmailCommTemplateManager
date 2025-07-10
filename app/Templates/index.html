@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
+        <title>HTML Section Comparison Viewer</title>
+        <br>
+
+        {# Include any necessary CSS or JS files here #}
         {# Flash Messages Display #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -17,55 +21,68 @@
                 </div>
             {% endif %}
         {% endwith %}
-
-        <h1>HTML TR Comparison Viewer</h1>
-
+                    
         <div class="options-container">
-            <h2>Options</h2>
             <form id="optionsForm" action="{{ url_for('compare_trs') }}" method="get">
                 {# Hidden inputs to preserve current TR and Match when applying options #}
                 <input type="hidden" name="html_tr_index" value="{{ html_tr_index }}">
                 <input type="hidden" name="match_index" value="{{ match_index }}">
 
-                <div class="option-group">
-                    <label>Comparison Mode:</label>
-                    <div class="radio-group" onchange="updateScoreVisibility()">
-                        <label class="radio-label">
-                            <input type="radio" name="comparison_mode" value="text" {% if selected_comparison_mode == 'text' %}checked{% endif %}> Text Match
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="comparison_mode" value="hierarchy" {% if selected_comparison_mode == 'hierarchy' %}checked{% endif %}> Tag Hierarchy Match
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="comparison_mode" value="both" {% if selected_comparison_mode == 'both' %}checked{% endif %}> Both
-                        </label>
-                    </div>
-                </div>
+                <table class="options-table"> {# Add a class for potential table-specific styling #}
+                    <tbody>
+                        <tr>
+                            {# Comparison Mode Section #}
+                            <td class="option-cell">
+                                <div class="option-group">
+                                    <label class="form-question-label">Comparison Mode:</label>
+                                    <div class="radio-group" onchange="updateScoreVisibility()">
+                                        <label class="radio-label">
+                                            <input type="radio" name="comparison_mode" value="text" {% if selected_comparison_mode == 'text' %}checked{% endif %}> Text Match
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="comparison_mode" value="hierarchy" {% if selected_comparison_mode == 'hierarchy' %}checked{% endif %}> Tag Hierarchy Match
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="comparison_mode" value="both" {% if selected_comparison_mode == 'both' %}checked{% endif %}> Both
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
 
-                <div class="option-group">
-                    <label for="min_similarity_cutoff">Minimum Similarity Cutoff:</label>
-                    <select id="min_similarity_cutoff" name="min_similarity_cutoff" class="dropdown-select" onchange="handleCutoffChange(); this.form.submit();"> {# ADDED: this.form.submit() to onchange #}
-                        <option value="0" {% if selected_min_similarity_cutoff == '0' %}selected{% endif %}>0% (Manual Select)</option>
-                        {% set cutoff_values = ['30', '50', '90'] %} {# Restricted values #}
-                        {% for value in cutoff_values %}
-                            <option value="{{ value }}" {% if selected_min_similarity_cutoff == value %}selected{% endif %}>{{ value }}%</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                            {# Minimum Similarity Cutoff Section #}
+                            <td class="option-cell">
+                                <div class="option-group">
+                                    <label for="min_similarity_cutoff" class="form-question-label">Minimum Similarity Cutoff:</label>
+                                    <select id="min_similarity_cutoff" name="min_similarity_cutoff" class="dropdown-select" onchange="handleCutoffChange(); this.form.submit();"> {# ADDED: this.form.submit() to onchange #}
+                                        <option value="0" {% if selected_min_similarity_cutoff == '0' %}selected{% endif %}>0% (Manual Select)</option>
+                                        {% set cutoff_values = ['30', '50', '90'] %} {# Restricted values #}
+                                        {% for value in cutoff_values %}
+                                            <option value="{{ value }}" {% if selected_min_similarity_cutoff == value %}selected{% endif %}>{{ value }}%</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </td>
 
-                {# NEW: Template Group Dropdown - Initially hidden #}
-                <div id="templateGroupOption" class="option-group" style="display: none;">
-                    <label for="template_group">Select Group:</label>
-                    <select id="template_group" name="selected_template_group" class="dropdown-select" onchange="this.form.submit()">
-                        {# Default empty option for when 0% is not selected #}
-                        <option value="">-- Select a Group --</option>
-                        {% for group_name in template_group_names %}
-                            <option value="{{ group_name }}" {% if selected_template_group == group_name %}selected{% endif %}>{{ group_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                            {# Template Group Dropdown Section #}
+                            <td class="option-cell">
+                                <div id="templateGroupOption" class="option-group" style="display: none;">
+                                    <label for="template_group" class="form-question-label">Select Master Template Group:</label>
+                                    <select id="template_group" name="selected_template_group" class="dropdown-select" onchange="this.form.submit()">
+                                        {# Default empty option for when 0% is not selected #}
+                                        <option value="">-- Select a Group --</option>
+                                        {% for group_name in template_group_names %}
+                                            <option value="{{ group_name }}" {% if selected_template_group == group_name %}selected{% endif %}>{{ group_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-                <button type="submit" class="apply-options-button">Apply Options</button>
+                            {# Apply Options Button #}
+                            <td class="option-cell button-cell">
+                                <button type="submit" class="apply-options-button">Apply Options</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
         <div class="controls">
