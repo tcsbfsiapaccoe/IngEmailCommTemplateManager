@@ -24,14 +24,14 @@
                     
         <div class="options-container">
             <form id="optionsForm" action="{{ url_for('compare_trs') }}" method="get">
-                {# Hidden inputs to preserve current TR and Match when applying options #}
+                <!-- Hidden inputs to preserve current TR and Match when applying options -->
                 <input type="hidden" name="html_tr_index" value="{{ html_tr_index }}">
                 <input type="hidden" name="match_index" value="{{ match_index }}">
 
-                <table class="options-table"> {# Add a class for potential table-specific styling #}
+                <table class="options-table">
                     <tbody>
                         <tr>
-                            {# Comparison Mode Section #}
+                            <!-- Comparison Mode -->
                             <td class="option-cell">
                                 <div class="option-group">
                                     <label class="form-question-label">Comparison Mode:</label>
@@ -49,13 +49,13 @@
                                 </div>
                             </td>
 
-                            {# Minimum Similarity Cutoff Section #}
+                            <!-- Minimum Similarity Cutoff -->
                             <td class="option-cell">
                                 <div class="option-group">
                                     <label for="min_similarity_cutoff" class="form-question-label">Minimum Similarity Cutoff:</label>
                                     <select id="min_similarity_cutoff" name="min_similarity_cutoff" class="dropdown-select" onchange="handleCutoffChange(); this.form.submit();"> {# ADDED: this.form.submit() to onchange #}
                                         <option value="0" {% if selected_min_similarity_cutoff == '0' %}selected{% endif %}>0% (Manual Select)</option>
-                                        {% set cutoff_values = ['30', '50', '90'] %} {# Restricted values #}
+                                        {% set cutoff_values = ['30', '50', '90'] %} 
                                         {% for value in cutoff_values %}
                                             <option value="{{ value }}" {% if selected_min_similarity_cutoff == value %}selected{% endif %}>{{ value }}%</option>
                                         {% endfor %}
@@ -63,20 +63,21 @@
                                 </div>
                             </td>
 
-                            {# Template Group Dropdown Section #}
+                            <!-- Template Group Dropdown -->
                             <td class="option-cell">
                                 <div id="templateGroupOption" class="option-group" style="display: none;">
                                     <label for="template_group" class="form-question-label">Select Master Template Group:</label>
                                     <select id="template_group" name="selected_template_group" class="dropdown-select" onchange="this.form.submit()">
                                         {# Default empty option for when 0% is not selected #}
-                                        <option value="">-- Select a Group --</option>
+                                        <option value="">-- Select a Template Group --</option>
                                         {% for group_name in template_group_names %}
                                             <option value="{{ group_name }}" {% if selected_template_group == group_name %}selected{% endif %}>{{ group_name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
+                            </td>
 
-                            {# Apply Options Button #}
+                            <!-- Apply Options Button -->
                             <td class="option-cell button-cell">
                                 <button type="submit" class="apply-options-button">Apply Options</button>
                             </td>
@@ -90,7 +91,6 @@
             <button class="primary-button" onclick="location.href='{{ next_link }}'" {{ next_disabled }}>Next HTML TR ▶</button>
         </div>
 
-
         {% if error_message %}
             <p class="error-message">{{ error_message }}</p>
         {% else %}
@@ -99,8 +99,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Current HTML File TR</th>
-                        <th>Most Matching Master Template TR (Match {{ current_match_number }} of {{ total_matches }})</th>
+                        <th>Current HTML Section</th>
+                        <th>Most Matching Master Template Section (Match {{ current_match_number }} of {{ total_matches }})</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,6 +126,7 @@
                             </div>
                         </td>
                     </tr>
+
                     <tr class="percentages-row">
                         <td colspan="2">
                             <h3>Comparison Scores:</h3>
@@ -173,7 +174,7 @@
                     }
                 }
 
-                // Remove highlight from others (redundant if logic above is perfect, but good for safety)
+                // Remove highlight from others (redundant, but good for safety)
                 [textScore, hierarchyScore, combinedScore].forEach(item => {
                     if (item && !item.style.display.includes('list-item')) {
                         item.classList.remove('highlight-score');
@@ -190,18 +191,18 @@
                     if (totalMatches === 0) {
                         matchNavControls.style.display = 'none';
                     } else {
-                        matchNavControls.style.display = 'block'; // Or 'flex' as per your CSS for .match-nav-controls
+                        matchNavControls.style.display = 'block'; // Or 'flex' as per CSS for .match-nav-controls
                     }
                 }
             }
 
-            // NEW: Function to handle visibility of Template Group dropdown
+            // Handle visibility of Template Group dropdown
             function handleCutoffChange() {
                 const cutoffSelect = document.getElementById('min_similarity_cutoff');
                 const templateGroupOptionDiv = document.getElementById('templateGroupOption');
                 const templateGroupSelect = document.getElementById('template_group');
 
-                if (!cutoffSelect || !templateGroupOptionDiv) { // Safety check
+                if (!cutoffSelect || !templateGroupOptionDiv) {
                     console.warn("Elements for cutoff/group handling not found.");
                     return;
                 }
@@ -215,7 +216,7 @@
                 } else {
                     templateGroupOptionDiv.style.display = 'none';
                     if (templateGroupSelect) {
-                        templateGroupSelect.value = ''; // Reset to the default "-- Select a Group --" option
+                        templateGroupSelect.value = ''; // Reset to the default "-- Select a Template Group --" option
                     }
                 }
             }
@@ -224,7 +225,6 @@
             document.addEventListener('DOMContentLoaded', () => {
                 updateScoreVisibility();
                 manageMatchNavButtons();
-                // Call handleCutoffChange ONLY for initial visibility setup, not to submit the form
                 handleCutoffChange();
             });
         </script>
