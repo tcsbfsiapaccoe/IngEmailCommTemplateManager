@@ -45,7 +45,7 @@ class IngCurrentHtmlPageScanner:
             print(f"Warning: Table matching selector '{table2_selector}' not found.")
 
         non_empty_tr_elements: List[Tag] = [
-            tr for tr in all_tr_elements if tr.get_text(strip=True) != ""
+            tr for tr in all_tr_elements if tr.get_text(strip=True) != "" or tr.find('img')
         ]
 
         return non_empty_tr_elements
