@@ -137,6 +137,17 @@
                             </ul>
                         </td>
                     </tr>
+
+                    {# New TR for Download Button #}
+                    <tr class="download-row">
+                        <td colspan="2" style="text-align: left;">
+                            <button class="primary-button apply-template-button" {{ html_modified }} onclick="downloadModifiedHtml()" {% if not html_modified %}disabled{% endif %}>Download Modified HTML File</button>
+                            <input type="hidden" id="fullModifiedHtmlContent" value="{{ full_current_html | e }}">
+                            <input type="hidden" id="originalFilename" value="{{ original_current_filename | e }}">
+                        </td>
+                        <td></td>
+                    </tr>
+
                 </tbody>
             </table>
         {% endif %}
@@ -220,6 +231,27 @@
                     }
                 }
             }
+
+            // Function to download the modified HTML content
+
+            function downloadModifiedHtml() {
+                window.location.href = "{{ url_for('download_modified_html') }}";
+            }
+            
+            function downloadModifiedHtml_Old() {
+                const htmlContent = document.getElementById('fullModifiedHtmlContent').value;
+                const originalFilename = document.getElementById('originalFilename').value;
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = originalFilename; // Use the original filename
+                document.body.appendChild(a); // Append to body to make it clickable
+                a.click(); // Trigger the download
+                document.body.removeChild(a); // Clean up the temporary anchor tag
+                URL.revokeObjectURL(url); // Release the object URL
+            }
+
 
             // Call all necessary functions when the page loads to set the initial state
             document.addEventListener('DOMContentLoaded', () => {
